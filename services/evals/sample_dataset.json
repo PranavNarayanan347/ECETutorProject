@@ -1,0 +1,16 @@
+[
+  {
+    "id": "case_1",
+    "query": "Use KCL to solve for node voltage.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "case_2",
+    "query": "Need a hint on Thevenin equivalent.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  }
+]
