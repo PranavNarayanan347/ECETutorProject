@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECE Tutor</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Auth Panel -->
+    <div id="auth-panel" class="auth-panel">
+      <div class="auth-card">
+        <h1>ECE Tutor</h1>
+        <p class="subtitle">Socratic learning for circuits and systems</p>
+        <div class="auth-form">
+          <input id="auth-user" type="text" placeholder="User ID" />
+          <input id="auth-pass" type="password" placeholder="Password" />
+          <select id="auth-role">
+            <option value="student">Student</option>
+            <option value="instructor">Instructor</option>
+          </select>
+          <div class="auth-buttons">
+            <button id="btn-register" onclick="authRegister()">Register</button>
+            <button id="btn-login" onclick="authLogin()">Login</button>
+            <button id="btn-skip" class="ghost" onclick="skipAuth()">Continue as Guest</button>
+          </div>
+          <p id="auth-error" class="error"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Chat -->
+    <div id="main" class="main hidden">
+      <header>
+        <h1>ECE Tutor</h1>
+        <div class="header-controls">
+          <select id="course-select">
+            <option value="ece101">ECE 101</option>
+            <option value="ece201">ECE 201</option>
+            <option value="ece301">ECE 301</option>
+          </select>
+          <span id="user-badge" class="badge"></span>
+          <button id="btn-logout" class="ghost small" onclick="logout()">Logout</button>
+        </div>
+      </header>
+
+      <div class="chat-container">
+        <div class="chat-area">
+          <div id="messages" class="messages">
+            <div class="message assistant">
+              <div class="bubble">
+                <p>Welcome! I'm your ECE tutor. Ask me a question about circuits, signals, or systems, and I'll guide you through it step by step.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-area">
+            <div class="hint-buttons">
+              <button onclick="sendHintRequest()">Give me a hint</button>
+              <button onclick="sendSolutionRequest()">Show full solution</button>
+            </div>
+            <form id="chat-form" onsubmit="sendMessage(event)">
+              <input id="chat-input" type="text" placeholder="Ask a question..." autocomplete="off" />
+              <button type="submit">Send</button>
+            </form>
+          </div>
+        </div>
+
+        <aside id="sidebar" class="sidebar">
+          <h3>Sources</h3>
+          <div id="citations-list" class="citations-list">
+            <p class="empty-state">Citations will appear here after you ask a question.</p>
+          </div>
+          <div id="confidence-display" class="confidence-display">
+            <h3>Confidence</h3>
+            <div class="confidence-bar">
+              <div id="confidence-fill" class="confidence-fill" style="width:0%"></div>
+            </div>
+            <span id="confidence-value">--</span>
+          </div>
+          <div id="trace-display" class="trace-display">
+            <h3>Retrieval Info</h3>
+            <p id="trace-info" class="trace-info">No data yet.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

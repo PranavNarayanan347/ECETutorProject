@@ -1,16 +1,352 @@
 [
   {
-    "id": "case_1",
+    "id": "kcl_basic",
     "query": "Use KCL to solve for node voltage.",
     "expected_doc_id": "doc_manual",
     "expected_page": 1,
     "expected_response_type": "question"
   },
   {
-    "id": "case_2",
+    "id": "thevenin_hint",
     "query": "Need a hint on Thevenin equivalent.",
     "expected_doc_id": "doc_manual",
     "expected_page": 1,
     "expected_response_type": "hint"
+  },
+  {
+    "id": "kvl_loop",
+    "query": "How do I apply KVL to a loop with two voltage sources?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "ohms_law",
+    "query": "What is Ohm's law and when does it apply?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "norton_conversion",
+    "query": "How do I convert a Thevenin circuit to a Norton equivalent?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "capacitor_dc",
+    "query": "Why does a capacitor act as an open circuit at DC steady state?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "inductor_transient",
+    "query": "Give me a hint on finding the time constant of an RL circuit.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "superposition",
+    "query": "Explain the superposition principle for linear circuits.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "voltage_divider",
+    "query": "How do I use the voltage divider formula?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "current_divider",
+    "query": "Can I get a hint on the current divider?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "power_calculation",
+    "query": "How do I calculate power dissipated in a resistor?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "mesh_analysis",
+    "query": "Walk me through mesh analysis for a two-mesh circuit.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "node_analysis_hint",
+    "query": "I need a hint on node analysis with dependent sources.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "impedance_ac",
+    "query": "How do I find impedance of a series RLC circuit at a given frequency?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "phasor_domain",
+    "query": "Explain phasor domain analysis for AC circuits.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "op_amp_inverting",
+    "query": "How does an inverting op amp amplifier work?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "op_amp_hint",
+    "query": "Give me a hint on finding the gain of a non-inverting op amp.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "transfer_function",
+    "query": "How do I derive the transfer function of an RC low-pass filter?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "bode_plot",
+    "query": "Can you help me sketch a Bode plot for a first-order system?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "resonance",
+    "query": "What happens at resonance in a series RLC circuit?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "max_power_transfer",
+    "query": "Explain the maximum power transfer theorem.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "laplace_hint",
+    "query": "I need a hint on using Laplace transforms for circuit analysis.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "diode_forward",
+    "query": "How does a diode behave under forward bias?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "bjt_biasing",
+    "query": "Explain voltage divider biasing for a BJT.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "mosfet_saturation",
+    "query": "When is a MOSFET in saturation?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "fourier_hint",
+    "query": "Give me a hint on computing the Fourier series of a square wave.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "sampling_theorem",
+    "query": "What is the Nyquist sampling theorem?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "convolution",
+    "query": "How do I perform convolution of two signals?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "stability_hint",
+    "query": "I need a hint on checking BIBO stability from pole locations.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "digital_logic",
+    "query": "Simplify the Boolean expression A'B + AB' + AB.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "flip_flop_hint",
+    "query": "Can you give me a hint on how a D flip-flop works?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "adc_resolution",
+    "query": "How do I calculate the resolution of an ADC?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "energy_capacitor",
+    "query": "What is the energy stored in a charged capacitor?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "mutual_inductance",
+    "query": "Explain mutual inductance and coupling coefficient.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "series_parallel",
+    "query": "How do I simplify a series-parallel resistor network?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "wye_delta",
+    "query": "Give me a hint on wye-delta transformation.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "dependent_source",
+    "query": "How do I handle a dependent current source in nodal analysis?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "step_response",
+    "query": "Derive the step response of a first-order RC circuit.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "natural_response_hint",
+    "query": "I need a hint on the natural response of an RLC circuit.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "power_factor",
+    "query": "What is power factor and why does it matter?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "three_phase_hint",
+    "query": "Give me a hint on balanced three-phase circuit analysis.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "common_emitter",
+    "query": "Explain the small-signal model of a common-emitter amplifier.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "feedback_amplifier",
+    "query": "How does negative feedback affect amplifier gain and bandwidth?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "z_transform",
+    "query": "What is the Z-transform and how is it used in discrete systems?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "fir_filter_hint",
+    "query": "I need a hint on designing an FIR filter using windowing.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "differential_pair",
+    "query": "How does a differential pair amplifier reject common-mode signals?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "cmos_inverter",
+    "query": "Explain the operation of a CMOS inverter.",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "propagation_delay",
+    "query": "How do I calculate propagation delay in a logic gate?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
+  },
+  {
+    "id": "karnaugh_hint",
+    "query": "Can you give me a hint on Karnaugh map simplification?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "hint"
+  },
+  {
+    "id": "state_machine",
+    "query": "How do I design a finite state machine from a state diagram?",
+    "expected_doc_id": "doc_manual",
+    "expected_page": 1,
+    "expected_response_type": "question"
   }
 ]

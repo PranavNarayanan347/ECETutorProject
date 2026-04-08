@@ -15,3 +15,4 @@ def test_eval_runner_produces_metrics():
     assert "socratic_compliance" in metrics
     assert "avg_latency_ms" in metrics
     assert "p95_latency_ms" in metrics
+    assert metrics["case_count"] == 50

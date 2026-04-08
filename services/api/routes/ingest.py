@@ -1,6 +1,9 @@
-from fastapi import APIRouter, File, Form, UploadFile
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, File, Form, UploadFile
 
 from services.api import deps
+from services.api.auth import require_role
 from services.api.schemas.request_response import IngestResponse
 
 router = APIRouter(prefix="/ingest", tags=["ingest"])
@@ -13,6 +16,7 @@ async def ingest(
     file: UploadFile = File(...),
     module: str | None = Form(default=None),
     topic: str | None = Form(default=None),
+    _user: Annotated[dict, Depends(require_role("instructor", "admin"))] = None,
 ) -> IngestResponse:
     return await deps._ingestion_runner.run(
         course_id=course_id,

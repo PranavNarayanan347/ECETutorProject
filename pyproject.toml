@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ece-tutor-rag-mvp"
-version = "0.1.0"
+version = "0.2.0"
 description = "Socratic ECE tutor RAG backend"
 requires-python = ">=3.11"
 dependencies = [
@@ -13,12 +13,22 @@ dependencies = [
   "pydantic>=2.8.0",
   "pydantic-settings>=2.4.0",
   "python-multipart>=0.0.9",
+  "psycopg[binary]>=3.2.0",
+  "pymupdf>=1.24.0",
+  "openai>=1.40.0",
+  "PyJWT>=2.9.0",
+  "bcrypt>=4.2.0",
+  "python-json-logger>=2.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
   "pytest>=8.3.0",
+  "httpx>=0.27.0",
 ]
 
 [tool.setuptools]
 include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["services*", "frontend*", "scripts*"]

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from time import perf_counter
 from uuid import uuid4
 
@@ -14,8 +15,11 @@ from services.retrieval.query_rewriter import QueryRewriter
 from services.retrieval.reranker import Reranker
 from services.storage.models import ChatTurn, Citation
 from services.tutor_engine.groundedness_check import GroundednessChecker
+from services.tutor_engine.llm_client import LLMClient
 from services.tutor_engine.prompt_templates import PromptTemplates
 from services.tutor_engine.socratic_policy import SocraticPolicyEngine
+
+logger = logging.getLogger(__name__)
 
 
 class RAGOrchestrator:
@@ -28,24 +32,45 @@ class RAGOrchestrator:
         self.context_builder = ContextBuilder()
         self.policy = SocraticPolicyEngine()
         self.prompts = PromptTemplates()
-        self.groundedness = GroundednessChecker()
+        self.llm = LLMClient()
+        self.groundedness = GroundednessChecker(llm_client=self.llm)
 
     def handle_chat(self, request: ChatRequest) -> ChatResponse:
         start = perf_counter()
         state = self.session_manager.get_state(request.session_id)
+
         rewrite = self.query_rewriter.rewrite(request.message)
         candidates = self.hybrid_retriever.retrieve(rewrite, top_k=20)
         selected = self.reranker.rerank(rewrite, candidates, top_k=6)
         context, citations, selected_ids = self.context_builder.build(selected)
+
         response_type = self.policy.choose_response_type(
             message=request.message,
             allow_full_solution=request.allow_full_solution,
             hint_level=state.hint_level,
         )
-        content = self.prompts.build(response_type=response_type, query=request.message, context=context)
-        confidence, next_action = self.groundedness.check(content=content, citations=citations)
-        elapsed_ms = int((perf_counter() - start) * 1000)
 
+        if not candidates:
+            content = (
+                "I don't have enough source material on this topic yet. "
+                "Could you rephrase your question, or let your instructor know "
+                "this topic needs course material uploaded?"
+            )
+            confidence, next_action = 0.15, "clarify"
+        elif self.llm.available:
+            system_prompt = self.prompts.system_prompt(response_type)
+            user_msg = self.prompts.user_message(request.message, context)
+            try:
+                content = self.llm.generate(system_prompt, user_msg)
+            except Exception as exc:
+                logger.warning("LLM generation failed (%s); using fallback.", exc)
+                content = self.prompts.build_fallback(response_type, request.message, context)
+            confidence, next_action = self.groundedness.check(content, context, citations)
+        else:
+            content = self.prompts.build_fallback(response_type, request.message, context)
+            confidence, next_action = self.groundedness.check(content, context, citations)
+
+        elapsed_ms = int((perf_counter() - start) * 1000)
         trace = RetrievalTraceModel(
             query=request.message,
             rewrite=rewrite,
@@ -81,6 +106,11 @@ class RAGOrchestrator:
             state.hint_level = 1
         elif response_type.value == "hint":
             state.hint_level += 1
+
+        logger.info(
+            "Chat %s | type=%s confidence=%.2f latency=%dms chunks=%d",
+            request.session_id, response_type.value, confidence, elapsed_ms, len(selected_ids),
+        )
 
         return ChatResponse(
             response_type=response_type,
