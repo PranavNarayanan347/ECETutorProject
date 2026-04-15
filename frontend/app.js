@@ -71,41 +71,48 @@ async function sendMessage(event) {
   if (!text) return;
   input.value = "";
   appendMessage("user", text);
-  await doChat(text, false);
+  await doChat(text, false, null);
 }
 
 async function sendHintRequest() {
   appendMessage("user", "Can you give me a hint?");
-  await doChat("Can you give me a hint?", false);
+  await doChat("Can you give me a hint?", false, null);
 }
 
 async function sendSolutionRequest() {
   appendMessage("user", "Show me the full solution.");
-  await doChat("Show me the full solution.", true);
+  await doChat("Show me the full solution.", true, null);
 }
 
-async function doChat(message, allowFullSolution) {
+async function sendDrawCircuit() {
+  const input = document.getElementById("chat-input");
+  const text = input.value.trim() || "Draw the circuit we are discussing";
+  input.value = "";
+  appendMessage("user", text);
+  await doChat(text, false, "draw_circuit");
+}
+
+async function doChat(message, allowFullSolution, studentIntent) {
   const courseId = document.getElementById("course-select").value;
   const headers = { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
+  const body = {
+    session_id: sessionId,
+    course_id: courseId,
+    message,
+    allow_full_solution: allowFullSolution,
+  };
+  if (studentIntent) body.student_intent = studentIntent;
+
   try {
-    const res = await fetch(`${API}/chat`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        session_id: sessionId,
-        course_id: courseId,
-        message,
-        allow_full_solution: allowFullSolution,
-      }),
-    });
+    const res = await fetch(`${API}/chat`, { method: "POST", headers, body: JSON.stringify(body) });
     const data = await res.json();
     if (!res.ok) {
       appendMessage("assistant", `Error: ${data.detail || "Something went wrong."}`);
       return;
     }
-    appendMessage("assistant", data.content, data.response_type);
+    appendMessage("assistant", data.content, data.response_type, data.circuit_svg);
     updateCitations(data.citations);
     updateConfidence(data.confidence);
     updateTrace(data.retrieval_trace);
@@ -114,7 +121,7 @@ async function doChat(message, allowFullSolution) {
   }
 }
 
-function appendMessage(role, text, responseType) {
+function appendMessage(role, text, responseType, circuitSvg) {
   const container = document.getElementById("messages");
   const div = document.createElement("div");
   div.className = `message ${role}`;
@@ -124,8 +131,18 @@ function appendMessage(role, text, responseType) {
     badgeHtml = `<span class="response-badge ${responseType}">${responseType}</span>`;
   }
 
-  const paragraphs = text.split("\n").filter((l) => l.trim()).map((l) => `<p>${escapeHtml(l)}</p>`).join("");
-  div.innerHTML = `<div class="bubble">${badgeHtml}${paragraphs}</div>`;
+  const paragraphs = text
+    .split("\n")
+    .filter((l) => l.trim())
+    .map((l) => `<p>${escapeHtml(l)}</p>`)
+    .join("");
+
+  let circuitHtml = "";
+  if (circuitSvg) {
+    circuitHtml = `<div class="circuit-diagram">${circuitSvg}</div>`;
+  }
+
+  div.innerHTML = `<div class="bubble">${badgeHtml}${paragraphs}${circuitHtml}</div>`;
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 }

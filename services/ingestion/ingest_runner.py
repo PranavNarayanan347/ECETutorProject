@@ -8,7 +8,6 @@ from fastapi import UploadFile
 from services.api.schemas.request_response import IngestResponse
 from services.ingestion.chunker import Chunker
 from services.ingestion.embedder import Embedder
-from services.ingestion.indexer import Indexer
 from services.ingestion.pdf_parser import PDFParser
 from services.storage.models import Chunk, Document
 
@@ -16,11 +15,17 @@ from services.storage.models import Chunk, Document
 class IngestionRunner:
     def __init__(self, postgres_repo, vector_repo, keyword_repo, object_store) -> None:
         self.postgres_repo = postgres_repo
+        self.vector_repo = vector_repo
+        self.keyword_repo = keyword_repo
         self.object_store = object_store
         self.parser = PDFParser()
         self.chunker = Chunker()
         self.embedder = Embedder()
-        self.indexer = Indexer(postgres_repo, vector_repo, keyword_repo)
+
+    def _index_chunks(self, chunks: list[Chunk]) -> None:
+        self.postgres_repo.upsert_chunks(chunks)
+        self.vector_repo.upsert_chunks(chunks)
+        self.keyword_repo.upsert_chunks(chunks)
 
     async def run(
         self,
@@ -69,7 +74,7 @@ class IngestionRunner:
                 )
             )
 
-        self.indexer.index_chunks(chunks)
+        self._index_chunks(chunks)
         return IngestResponse(
             document_id=doc_id,
             status="complete",

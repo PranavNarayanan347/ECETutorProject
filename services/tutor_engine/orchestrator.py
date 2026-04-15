@@ -14,6 +14,7 @@ from services.retrieval.hybrid_retriever import HybridRetriever
 from services.retrieval.query_rewriter import QueryRewriter
 from services.retrieval.reranker import Reranker
 from services.storage.models import ChatTurn, Citation
+from services.tutor_engine.circuit_generator import CircuitGenerator, needs_circuit
 from services.tutor_engine.groundedness_check import GroundednessChecker
 from services.tutor_engine.llm_client import LLMClient
 from services.tutor_engine.prompt_templates import PromptTemplates
@@ -34,6 +35,7 @@ class RAGOrchestrator:
         self.prompts = PromptTemplates()
         self.llm = LLMClient()
         self.groundedness = GroundednessChecker(llm_client=self.llm)
+        self.circuit_gen = CircuitGenerator()
 
     def handle_chat(self, request: ChatRequest) -> ChatResponse:
         start = perf_counter()
@@ -69,6 +71,13 @@ class RAGOrchestrator:
         else:
             content = self.prompts.build_fallback(response_type, request.message, context)
             confidence, next_action = self.groundedness.check(content, context, citations)
+
+        circuit_svg = None
+        if needs_circuit(request.message, request.student_intent) and self.circuit_gen.available:
+            try:
+                circuit_svg = self.circuit_gen.generate(request.message, context)
+            except Exception as exc:
+                logger.warning("Circuit generation failed: %s", exc)
 
         elapsed_ms = int((perf_counter() - start) * 1000)
         trace = RetrievalTraceModel(
@@ -108,13 +117,15 @@ class RAGOrchestrator:
             state.hint_level += 1
 
         logger.info(
-            "Chat %s | type=%s confidence=%.2f latency=%dms chunks=%d",
-            request.session_id, response_type.value, confidence, elapsed_ms, len(selected_ids),
+            "Chat %s | type=%s confidence=%.2f latency=%dms chunks=%d circuit=%s",
+            request.session_id, response_type.value, confidence,
+            elapsed_ms, len(selected_ids), bool(circuit_svg),
         )
 
         return ChatResponse(
             response_type=response_type,
             content=content,
+            circuit_svg=circuit_svg,
             citations=citations,
             confidence=confidence,
             next_action=next_action,

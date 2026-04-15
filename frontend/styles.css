@@ -217,6 +217,23 @@ header h1 { font-size: 1.2rem; }
 
 .trace-info { font-size: .82rem; color: var(--text-dim); line-height: 1.5; }
 
+/* Circuit Diagrams */
+.circuit-diagram {
+  margin-top: .8rem;
+  padding: .8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+.circuit-diagram svg {
+  max-width: 100%;
+  height: auto;
+  color: var(--text);
+}
+
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .bubble { max-width: 90%; }

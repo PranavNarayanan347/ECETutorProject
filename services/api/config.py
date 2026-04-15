@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     jwt_secret: str = "change-me-in-production"
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 1440
+    anthropic_api_key: str = ""
+    circuit_model: str = "claude-sonnet-4-20250514"
     cors_origins: str = "*"
     object_store_path: str = "uploads"
 

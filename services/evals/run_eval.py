@@ -1,12 +1,28 @@
 from __future__ import annotations
 
+import json
 import logging
 import time
+from dataclasses import dataclass
+from pathlib import Path
 
 from services.api.schemas.request_response import ChatRequest
-from services.evals.dataset_loader import load_dataset
 from services.evals.metrics import citation_precision, retrieval_recall_at_k, socratic_compliance
 from services.storage.models import Chunk, Document
+
+
+@dataclass
+class EvalCase:
+    id: str
+    query: str
+    expected_doc_id: str
+    expected_page: int
+    expected_response_type: str
+
+
+def load_dataset(path: str) -> list[EvalCase]:
+    raw = json.loads(Path(path).read_text())
+    return [EvalCase(**item) for item in raw]
 
 logger = logging.getLogger(__name__)
 
@@ -162,10 +178,10 @@ if __name__ == "__main__":
     from services.api import deps
 
     results = run(
-        orchestrator=deps._orchestrator,
-        postgres_repo=deps._postgres_repo,
-        vector_repo=deps._vector_repo,
-        keyword_repo=deps._keyword_repo,
+        orchestrator=deps.orchestrator,
+        postgres_repo=deps.postgres_repo,
+        vector_repo=deps.vector_repo,
+        keyword_repo=deps.keyword_repo,
         dataset_path="services/evals/sample_dataset.json",
     )
     for key, value in results.items():

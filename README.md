@@ -62,7 +62,7 @@ services/
   api/           FastAPI app, routes, schemas, auth, config
   tutor_engine/  Socratic policy, LLM client, prompt templates, orchestrator
   retrieval/     Query rewrite, hybrid retrieval, reranker, context builder
-  ingestion/     PDF parser, chunker, embedder, indexer
+  ingestion/     PDF parser, chunker, embedder, ingestion runner
   storage/       Postgres, pgvector, keyword, object-store repositories
   evals/         Evaluation harness, metrics, benchmark dataset
 frontend/        Chat UI (HTML + CSS + JS)
@@ -84,6 +84,8 @@ All settings are configured via environment variables (or `.env` file):
 | `JWT_SECRET` | `change-me-in-production` | Secret for JWT signing |
 | `CORS_ORIGINS` | `*` | Allowed CORS origins |
 | `OBJECT_STORE_PATH` | `uploads` | Local path for uploaded PDFs |
+| `ANTHROPIC_API_KEY` | _(empty)_ | Anthropic API key for circuit diagrams |
+| `CIRCUIT_MODEL` | `claude-sonnet-4-20250514` | Claude model for SVG generation |
 
 ## Architecture
 

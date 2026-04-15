@@ -30,10 +30,10 @@ def main() -> None:
 
     start = time.time()
     results = run(
-        orchestrator=deps._orchestrator,
-        postgres_repo=deps._postgres_repo,
-        vector_repo=deps._vector_repo,
-        keyword_repo=deps._keyword_repo,
+        orchestrator=deps.orchestrator,
+        postgres_repo=deps.postgres_repo,
+        vector_repo=deps.vector_repo,
+        keyword_repo=deps.keyword_repo,
         dataset_path="services/evals/sample_dataset.json",
     )
     elapsed = time.time() - start

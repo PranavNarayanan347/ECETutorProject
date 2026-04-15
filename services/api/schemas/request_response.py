@@ -38,6 +38,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     response_type: ResponseType
     content: str
+    circuit_svg: str | None = None
     citations: list[CitationModel] = Field(default_factory=list)
     confidence: float = Field(ge=0.0, le=1.0)
     next_action: Literal["ask_next_step", "offer_hint", "offer_solution", "clarify"]

@@ -17,10 +17,10 @@ if settings.database_url:
     from services.storage.postgres_repo import PostgresRepo
     from services.storage.vector_repo import PgVectorRepo
 
-    _postgres_repo = PostgresRepo(dsn=settings.database_url)
-    _vector_repo = PgVectorRepo(dsn=settings.database_url)
-    _keyword_repo = PgKeywordRepo(dsn=settings.database_url)
-    _object_store = FileSystemObjectStore(base_path=settings.object_store_path)
+    postgres_repo = PostgresRepo(dsn=settings.database_url)
+    vector_repo = PgVectorRepo(dsn=settings.database_url)
+    keyword_repo = PgKeywordRepo(dsn=settings.database_url)
+    object_store = FileSystemObjectStore(base_path=settings.object_store_path)
 else:
     logger.info("No DATABASE_URL; falling back to in-memory storage.")
     from services.storage.keyword_repo import InMemoryKeywordRepo
@@ -28,23 +28,23 @@ else:
     from services.storage.postgres_repo import InMemoryPostgresRepo
     from services.storage.vector_repo import InMemoryVectorRepo
 
-    _postgres_repo = InMemoryPostgresRepo()
-    _vector_repo = InMemoryVectorRepo()
-    _keyword_repo = InMemoryKeywordRepo()
-    _object_store = LocalObjectStore()
+    postgres_repo = InMemoryPostgresRepo()
+    vector_repo = InMemoryVectorRepo()
+    keyword_repo = InMemoryKeywordRepo()
+    object_store = LocalObjectStore()
 
-_session_manager = SessionManager()
+session_manager = SessionManager()
 
-_orchestrator = RAGOrchestrator(
-    session_manager=_session_manager,
-    postgres_repo=_postgres_repo,
-    vector_repo=_vector_repo,
-    keyword_repo=_keyword_repo,
+orchestrator = RAGOrchestrator(
+    session_manager=session_manager,
+    postgres_repo=postgres_repo,
+    vector_repo=vector_repo,
+    keyword_repo=keyword_repo,
 )
 
-_ingestion_runner = IngestionRunner(
-    postgres_repo=_postgres_repo,
-    vector_repo=_vector_repo,
-    keyword_repo=_keyword_repo,
-    object_store=_object_store,
+ingestion_runner = IngestionRunner(
+    postgres_repo=postgres_repo,
+    vector_repo=vector_repo,
+    keyword_repo=keyword_repo,
+    object_store=object_store,
 )

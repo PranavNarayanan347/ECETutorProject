@@ -18,7 +18,7 @@ async def ingest(
     topic: str | None = Form(default=None),
     _user: Annotated[dict, Depends(require_role("instructor", "admin"))] = None,
 ) -> IngestResponse:
-    return await deps._ingestion_runner.run(
+    return await deps.ingestion_runner.run(
         course_id=course_id,
         title=title,
         file=file,

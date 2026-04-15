@@ -14,4 +14,4 @@ def chat(
     request: ChatRequest,
     user: Annotated[dict | None, Depends(get_current_user)] = None,
 ) -> ChatResponse:
-    return deps._orchestrator.handle_chat(request)
+    return deps.orchestrator.handle_chat(request)
